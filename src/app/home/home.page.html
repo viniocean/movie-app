@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Home</ion-title>
+    <ion-title>CineMatch</ion-title>
     <ion-buttons slot="end">
       <ion-button routerLink="/login">
         Login
@@ -12,13 +12,41 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <h2>Bem-vindo a página principal</h2>
-        <p>Nosso aplicativo é perfeito para amantes de cinema! Avalie os filmes que já assistiu e receba recomendações personalizadas baseadas nos seus gostos. Descubra novos filmes, explore gêneros e crie sua lista de favoritos de forma simples e intuitiva.</p>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+<ion-content [fullscreen]="true">
+  
+
+  <ion-segment scrollable value="1">
+    <ion-segment-button value="1">
+      <ion-label>Filmes Recentes</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="2">
+      <ion-label>Em Breve</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="3">
+      <ion-label>Em Cartaz</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="4">
+      <ion-label>Séries</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div class="ion-padding">
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="3">
+          <ion-badge color="light">Ação</ion-badge>
+        </ion-col>
+        <ion-col size="3">
+          <ion-badge color="light">Suspense</ion-badge>
+        </ion-col>
+        <ion-col size="3">
+          <ion-badge color="light">Terror</ion-badge>
+        </ion-col>
+        <ion-col size="3">
+          <ion-badge color="light">Drama</ion-badge>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
