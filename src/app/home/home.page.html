@@ -2,18 +2,13 @@
   <ion-toolbar>
     <ion-title>CineMatch</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/login">
-        Login
-      </ion-button>
-      <ion-button routerLink="/register">
-        Registrar
-      </ion-button>
+      <ion-button routerLink="/login">Login</ion-button>
+      <ion-button routerLink="/register">Registrar</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
 
   <ion-segment scrollable value="1">
     <ion-segment-button value="1">
@@ -30,23 +25,28 @@
     </ion-segment-button>
   </ion-segment>
 
-  <div class="ion-padding">
+  <!-- Verificação de loading -->
+  <div *ngIf="recentMovies.length === 0">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Carregando filmes...</p>
+  </div>
 
+  <!-- Exibição dos filmes recentes -->
+  <div *ngIf="recentMovies.length > 0">
     <ion-grid>
       <ion-row>
-        <ion-col size="3">
-          <ion-badge color="light">Ação</ion-badge>
-        </ion-col>
-        <ion-col size="3">
-          <ion-badge color="light">Suspense</ion-badge>
-        </ion-col>
-        <ion-col size="3">
-          <ion-badge color="light">Terror</ion-badge>
-        </ion-col>
-        <ion-col size="3">
-          <ion-badge color="light">Drama</ion-badge>
+        <ion-col *ngFor="let movie of recentMovies" size="6">
+          <ion-card>
+            <img [src]="tmdbService.getImageUrl(movie.poster_path)" />
+            <ion-card-content>
+              <ion-card-title>{{ movie.title }}</ion-card-title>
+              <p>{{ movie.release_date | date }}</p>
+              <p>{{ movie.overview }}</p>
+            </ion-card-content>
+          </ion-card>
         </ion-col>
       </ion-row>
     </ion-grid>
-
   </div>
+
+</ion-content>

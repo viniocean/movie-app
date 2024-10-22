@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <!-- Nome Completo -->
+        <ion-item>
+          <ion-label position="floating">Nome completo</ion-label>
+          <ion-input type="text" [(ngModel)]="registerData.fullName"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="validationErrors.fullName">{{ validationErrors.fullName }}</ion-text>
+
+        <!-- Email -->
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" [(ngModel)]="registerData.email"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="validationErrors.email">{{ validationErrors.email }}</ion-text>
+
+        <!-- Senha -->
+        <ion-item>
+          <ion-label position="floating">Senha</ion-label>
+          <ion-input type="password" [(ngModel)]="registerData.password"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="validationErrors.password">{{ validationErrors.password }}</ion-text>
+
+        <!-- Confirmar Senha -->
+        <ion-item>
+          <ion-label position="floating">Confirme a senha</ion-label>
+          <ion-input type="password" [(ngModel)]="registerData.confirmPassword"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="validationErrors.confirmPassword">{{ validationErrors.confirmPassword }}</ion-text>
+
+        <!-- Botão de Cadastro -->
+        <ion-button expand="block" (click)="validateAndRegister()">Registrar</ion-button>
+
+        <!-- Link para Login -->
+        <ion-button expand="block" fill="clear" routerLink="/login">Já tem uma conta? Login</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
