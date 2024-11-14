@@ -36,14 +36,15 @@
     <ion-grid>
       <ion-row>
         <ion-col *ngFor="let movie of recentMovies" size="6">
-          <ion-card>
-            <img [src]="tmdbService.getImageUrl(movie.poster_path)" />
-            <ion-card-content>
-              <ion-card-title>{{ movie.title }}</ion-card-title>
-              <p>{{ movie.release_date | date }}</p>
-              <p>{{ movie.overview }}</p>
-            </ion-card-content>
-          </ion-card>
+          <ion-card class="movie-card">
+            <!-- Navegar para a página de detalhes ao clicar no filme -->
+            <ion-card [routerLink]="['/movie-details', movie.id]">
+              <img [src]="tmdbService.getImageUrl(movie.poster_path)" />
+              <ion-card-content>
+                <ion-card-title>{{ movie.title }}</ion-card-title>
+              </ion-card-content>
+            </ion-card>            
+          </ion-card>            
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -1,27 +1,31 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.movie-card {
+  height: 300px; /* Ajuste conforme necessário */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-height: 300px; /* Impede que o card ultrapasse a altura definida */
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.movie-card img {
+  height: 200px; /* Limita a altura da imagem */
+  object-fit: cover; /* Faz com que a imagem preencha o espaço sem distorção */
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
+.movie-card ion-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-grow: 1;
+  padding: 10px;
+  overflow: hidden;
 }
 
-#container a {
-  text-decoration: none;
+.movie-card ion-card-title {
+  font-size: 16px; /* Ajuste o tamanho da fonte se necessário */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal; /* Permite múltiplas linhas, não uma linha só */
+  line-height: 1.2em; /* Ajuste do espaçamento entre linhas para títulos longos */
 }

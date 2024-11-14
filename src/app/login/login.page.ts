@@ -10,7 +10,7 @@ import { IonicModule } from '@ionic/angular';
 export class LoginPage {
   loginData = { email: '', password: '' };
 
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
 
   login() {
     console.log('Login data', this.loginData);

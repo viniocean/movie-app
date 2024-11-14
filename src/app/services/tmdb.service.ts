@@ -13,25 +13,25 @@ export class TmdbService {
   constructor(private http: HttpClient) {}
 
   getRecentMovies(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/movie/now_playing?api_key=${this.apiKey}`);
+    return this.http.get(`${this.apiUrl}/movie/now_playing?api_key=${this.apiKey}&language=pt-BR&`);
   }
 
   getUpcomingMovies(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/movie/upcoming?api_key=${this.apiKey}`);
+    return this.http.get(`${this.apiUrl}/movie/upcoming?api_key=${this.apiKey}&language=pt-BR&`);
   }
 
   getNowPlayingMovies(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/movie/now_playing?api_key=${this.apiKey}`);
+    return this.http.get(`${this.apiUrl}/movie/now_playing?api_key=${this.apiKey}&language=pt-BR&`);
   }
 
   getPopularTVShows(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/tv/popular?api_key=${this.apiKey}`);
+    return this.http.get(`${this.apiUrl}/tv/popular?api_key=${this.apiKey}&language=pt-BR&`);
   }
 
    getMovieDetails(movieId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/movie/${movieId}?api_key=${this.apiKey}`);
+    return this.http.get(`${this.apiUrl}/movie/${movieId}?api_key=${this.apiKey}&language=pt-BR&`);
    }
   getImageUrl(path: string): string {
-    return `${this.imageBaseUrl}${path}`;
+    return `${this.imageBaseUrl}${path}&language=pt-BR&`;
   }
 }

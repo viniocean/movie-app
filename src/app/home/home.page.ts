@@ -1,54 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { TmdbService } from '../services/tmdb.service';
+import { Router } from '@angular/router'; // Importar Router
+import { TmdbService } from '../services/tmdb.service'; // ajuste o caminho conforme necessário
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  recentMovies: any[] = []; // Definindo a propriedade recentMovies
 
-  // Propriedades que armazenarão os filmes
-  recentMovies: any[] = [];
-  upcomingMovies: any[] = [];
-  nowPlayingMovies: any[] = [];
-  popularTVShows: any[] = [];
+  constructor(
+    public tmdbService: TmdbService,
+    private router: Router // Adicionar Router no construtor
+  ) {}
 
-  constructor(public tmdbService: TmdbService) {}  // TmdbService é agora público para ser acessível no HTML
-
-  // Método de inicialização
   ngOnInit() {
-    // Verifique se a API está retornando os filmes recentes
-    this.tmdbService.getRecentMovies().subscribe(response => {
-      console.log('Filmes Recentes:', response);
-      this.recentMovies = response.results;
-    }, error => {
-      console.error('Erro ao carregar filmes recentes:', error);
-    });
-  
-    // Verifique se a API está retornando os filmes que estão por vir
-    this.tmdbService.getUpcomingMovies().subscribe(response => {
-      console.log('Filmes Em Breve:', response);
-      this.upcomingMovies = response.results;
-    }, error => {
-      console.error('Erro ao carregar filmes em breve:', error);
-    });
-  
-    // Verifique se a API está retornando os filmes em cartaz
-    this.tmdbService.getNowPlayingMovies().subscribe(response => {
-      console.log('Filmes Em Cartaz:', response);
-      this.nowPlayingMovies = response.results;
-    }, error => {
-      console.error('Erro ao carregar filmes em cartaz:', error);
-    });
-  
-    // Verifique se a API está retornando as séries populares
-    this.tmdbService.getPopularTVShows().subscribe(response => {
-      console.log('Séries Populares:', response);
-      this.popularTVShows = response.results;
-    }, error => {
-      console.error('Erro ao carregar séries populares:', error);
+    this.loadRecentMovies();
+  }
+
+  // Método para carregar filmes recentes
+  loadRecentMovies() {
+    this.tmdbService.getRecentMovies().subscribe((data: any) => {
+      this.recentMovies = data.results;
     });
   }
-  
+
+  // Método para ir aos detalhes do filme
+  goToMovieDetails(movieId: number) {
+    // Usando o router para navegar para a página de detalhes do filme
+    this.router.navigate(['/movie-details', movieId]);
+  }
 }
