@@ -1,31 +1,26 @@
-.movie-card {
-  height: 300px; /* Ajuste conforme necessário */
+ion-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-height: 300px; /* Impede que o card ultrapasse a altura definida */
+  height: 100%;  // Garante que o card ocupe 100% da altura disponível
+  min-height: 300px;  // Define uma altura mínima para os cards, ajuste conforme necessário
 }
 
-.movie-card img {
-  height: 200px; /* Limita a altura da imagem */
-  object-fit: cover; /* Faz com que a imagem preencha o espaço sem distorção */
-}
-
-.movie-card ion-card-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  flex-grow: 1;
-  padding: 10px;
-  overflow: hidden;
-}
-
-.movie-card ion-card-title {
-  font-size: 16px; /* Ajuste o tamanho da fonte se necessário */
+ion-card-title {
+  white-space: normal;  // Permite que o título ocupe múltiplas linhas, se necessário
+  overflow: hidden;     // Garante que o texto não ultrapasse os limites do card
+  text-overflow: ellipsis; // Exibe "..." quando o texto for muito longo
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  font-size: 16px;  // Ajuste o tamanho da fonte conforme necessário
+}
+
+
+ion-card-content {
+  flex-grow: 1;  // Garante que o conteúdo ocupe o restante do espaço disponível
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-overflow: ellipsis;  // Garante que o conteúdo não transborde
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal; /* Permite múltiplas linhas, não uma linha só */
-  line-height: 1.2em; /* Ajuste do espaçamento entre linhas para títulos longos */
 }

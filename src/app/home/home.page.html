@@ -9,45 +9,106 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <!-- Campo de pesquisa -->
+  <ion-searchbar 
+    [(ngModel)]="searchQuery" 
+    (ionInput)="searchMovies()" 
+    debounce="300" 
+    placeholder="Pesquise filmes ou séries">
+  </ion-searchbar>
 
-  <ion-segment scrollable value="1">
-    <ion-segment-button value="1">
-      <ion-label>Filmes Recentes</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="2">
-      <ion-label>Em Breve</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="3">
-      <ion-label>Em Cartaz</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="4">
-      <ion-label>Séries</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-
-  <!-- Verificação de loading -->
-  <div *ngIf="recentMovies.length === 0">
-    <ion-spinner name="crescent"></ion-spinner>
-    <p>Carregando filmes...</p>
-  </div>
-
-  <!-- Exibição dos filmes recentes -->
-  <div *ngIf="recentMovies.length > 0">
+  <!-- Exibição dos resultados de pesquisa -->
+  <div *ngIf="searchQuery && searchResults.length > 0">
     <ion-grid>
       <ion-row>
-        <ion-col *ngFor="let movie of recentMovies" size="6">
-          <ion-card class="movie-card">
-            <!-- Navegar para a página de detalhes ao clicar no filme -->
-            <ion-card [routerLink]="['/movie-details', movie.id]">
-              <img [src]="tmdbService.getImageUrl(movie.poster_path)" />
-              <ion-card-content>
-                <ion-card-title>{{ movie.title }}</ion-card-title>
-              </ion-card-content>
-            </ion-card>            
-          </ion-card>            
+        <ion-col *ngFor="let result of searchResults" size="6">
+          <ion-card (click)="goToMovieDetails(result.id)">
+            <img [src]="tmdbService.getImageUrl(result.poster_path)" />
+            <ion-card-content>
+              <ion-card-title>{{ result.title || result.name }}</ion-card-title>
+            </ion-card-content>
+          </ion-card>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
 
+  <!-- Exibição dos filmes ou séries quando não há pesquisa -->
+  <div *ngIf="!searchQuery || searchResults.length === 0">
+    <ion-segment scrollable [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged($event)">
+      <ion-segment-button value="1">
+        <ion-label>Filmes Recentes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="2">
+        <ion-label>Em Breve</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="3">
+        <ion-label>Em Cartaz</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="4">
+        <ion-label>Séries</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Exibição dos filmes -->
+    <div *ngIf="selectedSegment === '1'">
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let movie of recentMovies" size="6">
+            <ion-card (click)="goToMovieDetails(movie.id)">
+              <img [src]="tmdbService.getImageUrl(movie.poster_path)" />
+              <ion-card-content>
+                <ion-card-title>{{ movie.title }}</ion-card-title>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div *ngIf="selectedSegment === '2'">
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let movie of upcomingMovies" size="6">
+            <ion-card (click)="goToMovieDetails(movie.id)">
+              <img [src]="tmdbService.getImageUrl(movie.poster_path)" />
+              <ion-card-content>
+                <ion-card-title>{{ movie.title }}</ion-card-title>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div *ngIf="selectedSegment === '3'">
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let movie of nowPlayingMovies" size="6">
+            <ion-card (click)="goToMovieDetails(movie.id)">
+              <img [src]="tmdbService.getImageUrl(movie.poster_path)" />
+              <ion-card-content>
+                <ion-card-title>{{ movie.title }}</ion-card-title>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div *ngIf="selectedSegment === '4'">
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let show of tvShows" size="6">
+            <ion-card (click)="goToMovieDetails(show.id)">
+              <img [src]="tmdbService.getImageUrl(show.poster_path)" />
+              <ion-card-content>
+                <ion-card-title>{{ show.name }}</ion-card-title>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
 </ion-content>
