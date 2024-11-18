@@ -8,17 +8,30 @@
   <ion-grid>
     <ion-row>
       <ion-col>
+        <!-- Input de E-mail -->
         <ion-item>
           <ion-label position="floating">Email</ion-label>
           <ion-input type="email" [(ngModel)]="loginData.email"></ion-input>
         </ion-item>
 
+        <!-- Input de Senha -->
         <ion-item>
           <ion-label position="floating">Senha</ion-label>
           <ion-input type="password" [(ngModel)]="loginData.password"></ion-input>
         </ion-item>
 
+        <!-- Botão de Login -->
         <ion-button expand="block" (click)="login()">Login</ion-button>
+
+        <!-- Botão de Login com Google -->
+        <ion-button expand="block" fill="outline" (click)="loginWithGoogle()">Login com Google</ion-button>
+
+        <!-- Mensagem de Erro -->
+        <ion-text color="danger" *ngIf="errorMessage">
+          <p>{{ errorMessage }}</p>
+        </ion-text>
+
+        <!-- Botões adicionais -->
         <ion-button expand="block" fill="clear" routerLink="/register">Ainda não tem uma conta? Registrar</ion-button>
         <ion-button expand="block" fill="clear" routerLink="/home">Voltar ao Início</ion-button>
       </ion-col>

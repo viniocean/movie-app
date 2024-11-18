@@ -16,7 +16,44 @@
         <p><strong>Sinopse:</strong> {{ movie.overview }}</p>
       </ion-card-content>
     </ion-card>
+
+    <!-- Sistema de Avaliação e Comentário -->
+    <ion-row class="ion-justify-content-between">
+      <!-- Estrelas de Avaliação à Direita -->
+      <ion-col size="12" class="ion-text-end">
+        <ion-row class="ion-justify-content-center">
+          <ion-icon 
+            *ngFor="let star of stars; let i = index" 
+            [name]="i < rating ? 'star' : 'star-outline'" 
+            (click)="rateMovie(i + 1)" 
+            class="star-icon">
+          </ion-icon>
+        </ion-row>
+      </ion-col>
+
+      <!-- Exibir a avaliação salva, se houver -->
+      <ion-col size="12" class="ion-text-center">
+        <p *ngIf="savedRating > 0"><strong>Avaliação salva:</strong> {{ savedRating }} estrelas</p>
+        <p *ngIf="savedComment"><strong>Comentário:</strong> {{ savedComment }}</p>
+      </ion-col>
+
+      <!-- Campo de Comentário (opcional) -->
+      <ion-col size="12">
+        <ion-textarea 
+          [(ngModel)]="comment" 
+          placeholder="Escreva seu comentário (opcional)" 
+          rows="6">
+        </ion-textarea>
+      </ion-col>
+
+      <!-- Botão para Enviar Avaliação -->
+      <ion-col size="12">
+        <ion-button (click)="submitRating()">Postar Avaliação</ion-button>
+      </ion-col>
+    </ion-row>
+
   </div>
+
   <div *ngIf="!movie">
     <ion-spinner name="crescent"></ion-spinner>
     <p>Carregando detalhes do filme...</p>

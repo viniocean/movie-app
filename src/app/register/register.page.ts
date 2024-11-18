@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AngularFireAuth } from '@angular/fire/compat/auth'; // Importa o Firebase Auth
+import firebase from 'firebase/compat/app'; // Certifique-se de importar firebase corretamente
 
 @Component({
   selector: 'app-register',
@@ -22,9 +24,9 @@ export class RegisterPage {
     confirmPassword: ''
   };
 
-  constructor(private router: Router, private alertCtrl: AlertController) {}
+  constructor(private router: Router, private alertCtrl: AlertController, private afAuth: AngularFireAuth) {}
 
-  // Função para validar e registrar
+  // Validação e cadastro de usuário com email e senha
   validateAndRegister() {
     this.clearValidationErrors();
 
@@ -37,7 +39,7 @@ export class RegisterPage {
     // Validação do Email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.registerData.email)) {
-      this.validationErrors.email = 'Por favor insira um email válido.';
+      this.validationErrors.email = 'Por favor insira um email válido.';
     }
 
     // Validação da Senha
@@ -59,7 +61,6 @@ export class RegisterPage {
     this.register();
   }
 
-  // Limpa os erros de validação
   clearValidationErrors() {
     this.validationErrors = {
       fullName: '',
@@ -69,22 +70,60 @@ export class RegisterPage {
     };
   }
 
-  // Verifica se há erros de validação
   hasValidationErrors() {
     return Object.values(this.validationErrors).some(error => error !== '');
   }
 
-  // Lógica para registrar o usuário
+  // Cadastro com email e senha
   async register() {
-    console.log('Cadastro bem sucedido.', this.registerData);
-    const alert = await this.alertCtrl.create({
-      header: 'Success',
-      message: 'Cadastro bem sucedido.!',
-      buttons: ['OK']
-    });
-    await alert.present();
+    try {
+      const { email, password } = this.registerData;
+      const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      console.log('Cadastro bem sucedido:', userCredential);
 
-    // Redirecionar para a página de login após o registro
-    this.router.navigate(['/login']);
+      // Após o cadastro, você pode atualizar o perfil do usuário com o nome completo
+      await userCredential.user?.updateProfile({
+        displayName: this.registerData.fullName,
+        photoURL: ''
+      });
+
+      const alert = await this.alertCtrl.create({
+        header: 'Sucesso',
+        message: 'Cadastro realizado com sucesso!',
+        buttons: ['OK']
+      });
+      await alert.present();
+
+      // Redireciona para a página de login
+      this.router.navigate(['/home']);
+    } catch (error) {
+      console.error('Erro ao cadastrar:', error);
+      const alert = await this.alertCtrl.create({
+        header: 'Erro',
+        message: 'Erro ao realizar o cadastro. Tente novamente.',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
+  }
+
+  // Cadastro com Google
+  async registerWithGoogle() {
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      const userCredential = await this.afAuth.signInWithPopup(provider);
+      console.log('Usuário cadastrado com o Google:', userCredential);
+
+      // Atualize o perfil do usuário com o nome completo e foto
+      await userCredential.user?.updateProfile({
+        displayName: userCredential.user.displayName,
+        photoURL: userCredential.user.photoURL
+      });
+
+      // Redireciona para a página principal após o cadastro bem-sucedido
+      this.router.navigate(['/home']);
+    } catch (error) {
+      console.error('Erro ao cadastrar com o Google:', error);
+    }
   }
 }
