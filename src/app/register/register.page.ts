@@ -96,11 +96,19 @@ export class RegisterPage {
 
       // Redireciona para a página de login
       this.router.navigate(['/home']);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao cadastrar:', error);
+
+      let errorMessage = 'Erro ao realizar o cadastro. Tente novamente.';
+
+      // Tratamento de erro para email já existente
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'O email informado já está em uso. Por favor, use outro email.';
+      }
+
       const alert = await this.alertCtrl.create({
         header: 'Erro',
-        message: 'Erro ao realizar o cadastro. Tente novamente.',
+        message: errorMessage,
         buttons: ['OK']
       });
       await alert.present();

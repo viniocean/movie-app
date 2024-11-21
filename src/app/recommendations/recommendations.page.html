@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Recomendações</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="recommendedMovies.length > 0">
+    <ion-list>
+      <div *ngFor="let media of recommendedMovies">
+        <!-- Título da mídia, sem a explicação (sinopse) -->
+        <ion-item>
+          <ion-label>
+            <h2>Por que você gostou de "{{ media.title }}"</h2>
+            <!-- Removendo a sinopse -->
+          </ion-label>
+        </ion-item>
+
+        <!-- Filmes ou séries recomendadas relacionadas -->
+        <ion-list>
+          <ion-item *ngFor="let recommendedMedia of media.recommendedMovies" 
+          (click)="viewMovieDetails(recommendedMedia)">
+  <ion-thumbnail slot="start">
+    <img [src]="tmdbService.getImageUrl(recommendedMedia.poster_path)" />
+  </ion-thumbnail>
+  <ion-label>
+    <h3>{{ recommendedMedia.title || recommendedMedia.name }}</h3>
+  </ion-label>
+</ion-item>
+        </ion-list>
+      </div>
+    </ion-list>
+  </div>
+
+  <div *ngIf="!recommendedMovies.length">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Carregando recomendações...</p>
+  </div>
+</ion-content>

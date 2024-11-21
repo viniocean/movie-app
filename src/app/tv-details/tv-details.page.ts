@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TmdbService } from '../services/tmdb.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireAuth } from '@angular/fire/compat/auth';  // Importando o AngularFireAuth
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
-  selector: 'app-movie-details',
-  templateUrl: './movie-details.page.html',
-  styleUrls: ['./movie-details.page.scss'],
+  selector: 'app-tv-details',
+  templateUrl: './tv-details.page.html',
+  styleUrls: ['./tv-details.page.scss'],
 })
-export class MovieDetailsPage implements OnInit {
-  movie: any;
+export class TvDetailsPage implements OnInit {
+  tv: any;
   rating: number = 0; // Avaliação atual do usuário (de 1 a 5)
   stars: boolean[] = [false, false, false, false, false]; // Estado das estrelas (para destacar as estrelas selecionadas)
   comment: string = ''; // Comentário opcional
@@ -26,22 +26,18 @@ export class MovieDetailsPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    const movieId = Number(this.route.snapshot.paramMap.get('id'));
-    this.tmdbService.getMovieDetails(movieId).subscribe(response => {
-      this.movie = response;
-      this.loadSavedRating(movieId); // Carregar avaliação salva, se houver
-      this.loadReviews(movieId); // Carregar avaliações dos usuários
+    const tvId = Number(this.route.snapshot.paramMap.get('id'));
+    this.tmdbService.getTvDetails(tvId).subscribe(response => {
+      this.tv = response;
+      this.loadSavedRating(tvId); // Carregar avaliação salva, se houver
+      this.loadReviews(tvId); // Carregar avaliações dos usuários
     }, error => {
-      console.error('Erro ao carregar detalhes do filme:', error);
+      console.error('Erro ao carregar detalhes da série:', error);
     });
-
-    
   }
 
-  
-
-  loadSavedRating(movieId: number) {
-    const savedData = localStorage.getItem(`movie_${movieId}_rating`);
+  loadSavedRating(tvId: number) {
+    const savedData = localStorage.getItem(`tv_${tvId}_rating`);
     if (savedData) {
       const { rating, comment } = JSON.parse(savedData);
       this.savedRating = rating;
@@ -49,25 +45,25 @@ export class MovieDetailsPage implements OnInit {
     }
   }
 
-  loadReviews(movieId: number) {
-    this.firestore.collection('reviews', ref => ref.where('movieId', '==', movieId))
+  loadReviews(tvId: number) {
+    this.firestore.collection('reviews', ref => ref.where('tvId', '==', tvId))
       .get()
       .subscribe(querySnapshot => {
         this.reviews = querySnapshot.docs.map(doc => doc.data());
       });
   }
 
-  rateMovie(starIndex: number) {
+  rateTv(starIndex: number) {
     this.rating = starIndex;
     this.stars = this.stars.map((_, index) => index < starIndex);
   }
 
-  saveRating(movieId: number) {
+  saveRating(tvId: number) {
     const data = {
       rating: this.rating,
       comment: this.comment
     };
-    localStorage.setItem(`movie_${movieId}_rating`, JSON.stringify(data));
+    localStorage.setItem(`tv_${tvId}_rating`, JSON.stringify(data));
     this.savedRating = this.rating;
     this.savedComment = this.comment;
   }
@@ -81,24 +77,23 @@ export class MovieDetailsPage implements OnInit {
         return;
       }
 
-      const movieId = this.movie.id;
+      const tvId = this.tv.id;
       const reviewData = {
-        movieId,
-        title: this.movie.title,
+        tvId,
+        name: this.tv.name,
         rating: this.rating,
         comment: this.comment,
         userId: user.uid,  // ID do usuário
         username: user.displayName || 'Usuário Anônimo', // Nome do usuário, se disponível
         timestamp: new Date()
-        
       };
 
       // Enviar avaliação para o Firestore
       try {
         await this.firestore.collection('reviews').add(reviewData);
         alert('Avaliação enviada com sucesso!');
-        this.saveRating(movieId);  // Salvar a avaliação no localStorage, se necessário
-        this.loadReviews(movieId);  // Recarregar as avaliações
+        this.saveRating(tvId);  // Salvar a avaliação no localStorage, se necessário
+        this.loadReviews(tvId);  // Recarregar as avaliações
       } catch (error) {
         console.error('Erro ao enviar avaliação:', error);
         alert('Ocorreu um erro ao enviar sua avaliação. Tente novamente mais tarde.');

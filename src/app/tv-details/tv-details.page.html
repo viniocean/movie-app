@@ -1,37 +1,37 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{ movie?.title }}</ion-title>
+    <ion-title>{{ tv?.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div *ngIf="movie">
-    <img [src]="tmdbService.getImageUrl(movie.poster_path)" />
+  <div *ngIf="tv">
+    <img [src]="tmdbService.getImageUrl(tv.poster_path)" />
     <ion-card>
       <ion-card-header>
-        <ion-card-title>{{ movie.title }}</ion-card-title>
+        <ion-card-title>{{ tv.name }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p><strong>Data de Lançamento:</strong> {{ movie.release_date | date }}</p>
-        <p><strong>Sinopse:</strong> {{ movie.overview }}</p>
+        <p><strong>Data de Lançamento:</strong> {{ tv.first_air_date | date }}</p>
+        <p><strong>Sinopse:</strong> {{ tv.overview }}</p>
+        <p><strong>Número de Temporadas:</strong> {{ tv.number_of_seasons }}</p>
+        <p><strong>Número de Episódios:</strong> {{ tv.number_of_episodes }}</p>
       </ion-card-content>
     </ion-card>
 
     <!-- Sistema de Avaliação e Comentário -->
     <ion-row class="ion-justify-content-between">
-      <!-- Estrelas de Avaliação à Direita -->
       <ion-col size="12" class="ion-text-end">
         <ion-row class="ion-justify-content-center">
           <ion-icon 
             *ngFor="let star of stars; let i = index" 
             [name]="i < rating ? 'star' : 'star-outline'" 
-            (click)="rateMovie(i + 1)" 
+            (click)="rateTv(i + 1)" 
             class="star-icon">
           </ion-icon>
         </ion-row>
       </ion-col>
 
-      <!-- Campo de Comentário (opcional) -->
       <ion-col size="12">
         <ion-textarea 
           [(ngModel)]="comment" 
@@ -40,7 +40,6 @@
         </ion-textarea>
       </ion-col>
 
-      <!-- Botão para Enviar Avaliação -->
       <ion-col size="12">
         <ion-button (click)="submitRating()">Postar Avaliação</ion-button>
       </ion-col>
@@ -67,8 +66,8 @@
     </ion-row>
   </div>
 
-  <div *ngIf="!movie">
+  <div *ngIf="!tv">
     <ion-spinner name="crescent"></ion-spinner>
-    <p>Carregando detalhes do filme...</p>
+    <p>Carregando detalhes da série...</p>
   </div>
 </ion-content>
