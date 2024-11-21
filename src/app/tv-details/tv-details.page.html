@@ -1,9 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{ tv?.name }}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <div *ngIf="tv">
     <img [src]="tmdbService.getImageUrl(tv.poster_path)" />
@@ -19,7 +13,6 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Sistema de Avaliação e Comentário -->
     <ion-row class="ion-justify-content-between">
       <ion-col size="12" class="ion-text-end">
         <ion-row class="ion-justify-content-center">
@@ -45,7 +38,6 @@
       </ion-col>
     </ion-row>
 
-    <!-- Exibir Avaliações de Outros Usuários -->
     <ion-row>
       <ion-col size="12">
         <ion-card *ngFor="let review of reviews">

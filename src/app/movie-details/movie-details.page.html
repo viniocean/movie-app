@@ -1,9 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{ movie?.title }}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <div *ngIf="movie">
     <img [src]="tmdbService.getImageUrl(movie.poster_path)" />
@@ -17,9 +11,7 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Sistema de Avaliação e Comentário -->
     <ion-row class="ion-justify-content-between">
-      <!-- Estrelas de Avaliação à Direita -->
       <ion-col size="12" class="ion-text-end">
         <ion-row class="ion-justify-content-center">
           <ion-icon 
@@ -31,7 +23,6 @@
         </ion-row>
       </ion-col>
 
-      <!-- Campo de Comentário (opcional) -->
       <ion-col size="12">
         <ion-textarea 
           [(ngModel)]="comment" 
@@ -40,13 +31,11 @@
         </ion-textarea>
       </ion-col>
 
-      <!-- Botão para Enviar Avaliação -->
       <ion-col size="12">
         <ion-button (click)="submitRating()">Postar Avaliação</ion-button>
       </ion-col>
     </ion-row>
 
-    <!-- Exibir Avaliações de Outros Usuários -->
     <ion-row>
       <ion-col size="12">
         <ion-card *ngFor="let review of reviews">

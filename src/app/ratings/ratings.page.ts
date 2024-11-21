@@ -50,7 +50,7 @@ export class RatingsPage implements OnInit {
             id: doc.payload.doc.id,
             comment: data.comment,
             movieId: data.movieId,
-            title: data.title,  // Incluindo o campo title
+            title: data.title,
             rating: data.rating,
             timestamp: data.timestamp,
             username: data.username
@@ -71,7 +71,6 @@ export class RatingsPage implements OnInit {
   }
 }
 
-// Interface Evaluation para tipagem correta
 interface Evaluation {
   comment: string;
   movieId: number;
@@ -79,5 +78,5 @@ interface Evaluation {
   timestamp: any;
   userId: string;
   username: string;
-  title: string;  // Adicionando title
+  title: string;
 }

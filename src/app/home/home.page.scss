@@ -1,27 +1,151 @@
+:root {
+  --primary-color: #3f51b5; 
+  --secondary-color: #ffb300;
+  --background-color: #181818;
+  --text-color: #cccccc;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --ion-background-color: #181818; 
+  --ion-text-color: #cccccc; 
+}
+
+/* Tema escuro forçado */
+ion-app {
+  --background: var(--ion-background-color); 
+  --ion-background-color: var(--background-color); 
+  --ion-text-color: var(--text-color); 
+}
+
+ion-content {
+  --background: var(--background-color);
+  padding: 16px;
+}
+
+/* Cards */
 ion-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;  // Garante que o card ocupe 100% da altura disponível
-  min-height: 300px;  // Define uma altura mínima para os cards, ajuste conforme necessário
+  background-color: #202020; 
+  border-radius: 12px;
+  box-shadow: var(--card-shadow); 
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  color: #ffffff;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4); 
+  }
+
+  img {
+    width: 100%;
+    height: auto; 
+    max-height: 300px; 
+    object-fit: cover; 
+    border-radius: 12px;
+    margin-bottom: 10px;
+  }
 }
 
 ion-card-title {
-  white-space: normal;  // Permite que o título ocupe múltiplas linhas, se necessário
-  overflow: hidden;     // Garante que o texto não ultrapasse os limites do card
-  text-overflow: ellipsis; // Exibe "..." quando o texto for muito longo
+  white-space: normal; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  font-size: 16px;  // Ajuste o tamanho da fonte conforme necessário
+  font-size: 16px; 
+  height: 50px; 
+  text-align: center;
+  line-height: 1.2; 
+  padding: 5px; 
+  border-radius: 8px; 
+  color: #ffffff;
 }
-
 
 ion-card-content {
-  flex-grow: 1;  // Garante que o conteúdo ocupe o restante do espaço disponível
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-overflow: ellipsis;  // Garante que o conteúdo não transborde
-  overflow: hidden;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-color); 
+  padding: 10px;
 }
 
+
+ion-searchbar {
+  margin-bottom: 20px;
+  background-color: #202020;
+  border-radius: 8px;
+  color: var(--ion-text-color);
+
+  input {
+    font-size: 16px;
+  }
+}
+
+ion-segment {
+  background-color: #202020;
+  border-radius: 8px;
+  overflow: hidden;
+
+  ion-segment-button {
+    color: white;
+    font-weight: bold;
+
+    &.segment-button-checked {
+      background-color: var(--secondary-color);
+    }
+  }
+}
+
+ion-header {
+  --background: var(--background-color);
+}
+
+ion-header ion-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--ion-text-color);
+}
+
+ion-button {
+  --background: var(--background-color);
+
+  ion-icon {
+    font-size: 1.2rem;
+    color: var(--ion-text-color);
+  }
+}
+
+ion-menu {
+  --background: var(--background-color); 
+}
+
+ion-menu ion-toolbar {
+  --background: var(--background-color); 
+}
+
+ion-menu ion-title {
+  font-size: 1.2rem;
+  color: white;
+}
+
+ion-menu ion-button {
+  --color: white;
+}
+
+ion-menu ion-item {
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+@media (min-width: 768px) {
+  ion-col {
+    size: 4; 
+  }
+}
+
+@media (max-width: 768px) {
+  ion-col {
+    size: 6; 
+  }
+}

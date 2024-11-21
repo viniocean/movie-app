@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/compat/auth'; // Importa o Firebase Auth
-import firebase from 'firebase/compat/app'; // Certifique-se de importar firebase corretamente
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app'; 
 
 @Component({
   selector: 'app-login',
@@ -10,23 +10,21 @@ import firebase from 'firebase/compat/app'; // Certifique-se de importar firebas
 })
 export class LoginPage {
   loginData = { email: '', password: '' };
-  errorMessage: string | null = null; // Variável para exibir mensagens de erro
+  errorMessage: string | null = null; 
 
-  constructor(private router: Router, private afAuth: AngularFireAuth) {}
+  constructor(private router: Router, private afAuth: AngularFireAuth) { }
 
-  // Método de login com email e senha
+
   async login() {
     try {
       const { email, password } = this.loginData;
       const userCredential = await this.afAuth.signInWithEmailAndPassword(email, password);
       console.log('Usuário logado com sucesso:', userCredential);
 
-      // Redireciona para a página principal após login bem-sucedido
       this.router.navigate(['/home']);
     } catch (error: any) {
       console.error('Erro ao fazer login:', error);
 
-      // Tratar os diferentes erros de autenticação
       if (error.code === 'auth/invalid-email') {
         this.errorMessage = 'E-mail inválido. Verifique o formato.';
       } else if (error.code === 'auth/user-not-found') {
@@ -39,14 +37,12 @@ export class LoginPage {
     }
   }
 
-  // Método de login com o Google
   async loginWithGoogle() {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
       const userCredential = await this.afAuth.signInWithPopup(provider);
       console.log('Usuário logado com o Google:', userCredential);
 
-      // Redireciona para a página principal após login bem-sucedido
       this.router.navigate(['/home']);
     } catch (error) {
       console.error('Erro ao logar com o Google:', error);

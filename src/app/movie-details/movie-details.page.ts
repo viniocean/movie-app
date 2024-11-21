@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TmdbService } from '../services/tmdb.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireAuth } from '@angular/fire/compat/auth';  // Importando o AngularFireAuth
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-movie-details',
@@ -11,26 +11,26 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';  // Importando o An
 })
 export class MovieDetailsPage implements OnInit {
   movie: any;
-  rating: number = 0; // Avaliação atual do usuário (de 1 a 5)
-  stars: boolean[] = [false, false, false, false, false]; // Estado das estrelas (para destacar as estrelas selecionadas)
-  comment: string = ''; // Comentário opcional
-  savedRating: number = 0; // Avaliação salva
-  savedComment: string = ''; // Comentário salvo
-  reviews: any[] = []; // Avaliações de outros usuários
+  rating: number = 0;
+  stars: boolean[] = [false, false, false, false, false];
+  comment: string = ''; 
+  savedRating: number = 0; 
+  savedComment: string = '';
+  reviews: any[] = []; 
 
   constructor(
     public route: ActivatedRoute,
     public tmdbService: TmdbService,
     private firestore: AngularFirestore,
-    private afAuth: AngularFireAuth  // Serviço de autenticação Firebase
+    private afAuth: AngularFireAuth 
   ) {}
 
   ngOnInit() {
     const movieId = Number(this.route.snapshot.paramMap.get('id'));
     this.tmdbService.getMovieDetails(movieId).subscribe(response => {
       this.movie = response;
-      this.loadSavedRating(movieId); // Carregar avaliação salva, se houver
-      this.loadReviews(movieId); // Carregar avaliações dos usuários
+      this.loadSavedRating(movieId); 
+      this.loadReviews(movieId); 
     }, error => {
       console.error('Erro ao carregar detalhes do filme:', error);
     });

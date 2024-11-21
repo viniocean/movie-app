@@ -1,4 +1,4 @@
-<!-- Menu lateral só será exibido se o usuário estiver logado -->
+
 <ion-menu *ngIf="currentUser" side="start" menuId="first" contentId="main-content">
   <ion-header>
     <ion-toolbar>
@@ -9,7 +9,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-content>
-    <!-- Opções da sidebar -->
+
     <ion-list>
       <ion-item button (click)="goToRatings()">
         <ion-label>Avaliações</ion-label>
@@ -21,12 +21,12 @@
   </ion-content>
 </ion-menu>
 
-<!-- Header com botão de menu, que aparece somente se o usuário estiver logado -->
+
 <ion-header>
   <ion-toolbar>
-    <ion-title>Home</ion-title>
+    <ion-title>Klaket</ion-title>
     <ion-buttons slot="start">
-      <ion-button *ngIf="currentUser" (click)="openMenu()"> <!-- Só exibe o botão de menu se o usuário estiver logado -->
+      <ion-button *ngIf="currentUser" (click)="openMenu()"> 
         <ion-icon name="menu"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -45,7 +45,6 @@
 </ion-header>
 
 <ion-content id="main-content" [fullscreen]="true">
-  <!-- Campo de pesquisa -->
   <ion-searchbar 
     [(ngModel)]="searchQuery" 
     (ionInput)="searchMovies()" 
@@ -53,7 +52,6 @@
     placeholder="Pesquise filmes ou séries">
   </ion-searchbar>
 
-  <!-- Exibição dos resultados de pesquisa -->
   <div *ngIf="searchQuery && searchResults.length > 0">
     <ion-grid>
       <ion-row>
@@ -69,7 +67,6 @@
     </ion-grid>
   </div>
 
-  <!-- Exibição dos filmes ou séries quando não há pesquisa -->
   <div *ngIf="!searchQuery || searchResults.length === 0">
     <ion-segment scrollable [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged($event)">
       <ion-segment-button value="1">
@@ -80,7 +77,6 @@
       </ion-segment-button>
     </ion-segment>
 
-    <!-- Exibição dos filmes -->
     <div *ngIf="selectedSegment === '1'">
       <ion-grid>
         <ion-row>

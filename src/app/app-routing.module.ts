@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     
     path: '',
-    redirectTo: 'home', // Redireciona para a tela de login como página inicial
+    redirectTo: 'home',
     pathMatch: 'full'
   },
 

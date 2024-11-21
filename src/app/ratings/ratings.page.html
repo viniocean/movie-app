@@ -1,25 +1,18 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Minhas Avaliações</ion-title>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
-  <!-- Verifica se há avaliações e exibe uma mensagem caso contrário -->
   <div *ngIf="evaluations && evaluations.length > 0; else noEvaluations">
     <ion-list>
       <ion-item *ngFor="let evaluation of evaluations">
         <ion-label>
-          <h2>{{ evaluation.title }}</h2> <!-- Comentário do usuário -->
-          <p>Nota: {{ evaluation.rating }}</p> <!-- Exibe a nota dada -->
-          <p>Comentário: {{ evaluation.comment }}</p> <!-- Exibe o nome do usuário -->
-          <!-- Você pode adicionar mais informações como o movieId ou timestamp, se necessário -->
+          <h2>{{ evaluation.title }}</h2> 
+          <p>Nota: {{ evaluation.rating }}</p> 
+          <p>Comentário: {{ evaluation.comment }}</p>
         </ion-label>
       </ion-item>
     </ion-list>
   </div>
 
-  <!-- Template alternativo se não houver avaliações -->
   <ng-template #noEvaluations>
     <p>Você ainda não avaliou nenhum filme.</p>
   </ng-template>
