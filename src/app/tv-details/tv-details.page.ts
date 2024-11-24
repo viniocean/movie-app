@@ -11,26 +11,26 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class TvDetailsPage implements OnInit {
   tv: any;
-  rating: number = 0; // Avaliação atual do usuário (de 1 a 5)
-  stars: boolean[] = [false, false, false, false, false]; // Estado das estrelas (para destacar as estrelas selecionadas)
-  comment: string = ''; // Comentário opcional
-  savedRating: number = 0; // Avaliação salva
-  savedComment: string = ''; // Comentário salvo
-  reviews: any[] = []; // Avaliações de outros usuários
+  rating: number = 0;
+  stars: boolean[] = [false, false, false, false, false]; 
+  comment: string = ''; 
+  savedRating: number = 0; 
+  savedComment: string = ''; 
+  reviews: any[] = []; 
 
   constructor(
     public route: ActivatedRoute,
     public tmdbService: TmdbService,
     private firestore: AngularFirestore,
-    private afAuth: AngularFireAuth  // Serviço de autenticação Firebase
+    private afAuth: AngularFireAuth 
   ) {}
 
   ngOnInit() {
     const tvId = Number(this.route.snapshot.paramMap.get('id'));
     this.tmdbService.getTvDetails(tvId).subscribe(response => {
       this.tv = response;
-      this.loadSavedRating(tvId); // Carregar avaliação salva, se houver
-      this.loadReviews(tvId); // Carregar avaliações dos usuários
+      this.loadSavedRating(tvId); 
+      this.loadReviews(tvId); 
     }, error => {
       console.error('Erro ao carregar detalhes da série:', error);
     });
@@ -70,30 +70,29 @@ export class TvDetailsPage implements OnInit {
 
   async submitRating() {
     if (this.rating > 0) {
-      // Verificar se o usuário está logado
       const user = await this.afAuth.currentUser;
       if (!user) {
         alert('Você precisa estar logado para enviar uma avaliação.');
         return;
       }
-
-      const tvId = this.tv.id;
+  
+      const tvId = this.tv?.id || 'ID desconhecido';
+      const tvTitle = this.tv?.title || 'Título desconhecido'; // Valor padrão
       const reviewData = {
         tvId,
-        name: this.tv.name,
+        title: this.tv?.name || this.tv?.title || 'Título desconhecido', // Alterado de tvTitle para title
         rating: this.rating,
-        comment: this.comment,
-        userId: user.uid,  // ID do usuário
-        username: user.displayName || 'Usuário Anônimo', // Nome do usuário, se disponível
+        comment: this.comment || 'Sem comentário',
+        userId: user.uid,
+        username: user.displayName || 'Usuário Anônimo',
         timestamp: new Date()
       };
-
-      // Enviar avaliação para o Firestore
+  
       try {
         await this.firestore.collection('reviews').add(reviewData);
         alert('Avaliação enviada com sucesso!');
-        this.saveRating(tvId);  // Salvar a avaliação no localStorage, se necessário
-        this.loadReviews(tvId);  // Recarregar as avaliações
+        this.saveRating(tvId);
+        this.loadReviews(tvId);
       } catch (error) {
         console.error('Erro ao enviar avaliação:', error);
         alert('Ocorreu um erro ao enviar sua avaliação. Tente novamente mais tarde.');

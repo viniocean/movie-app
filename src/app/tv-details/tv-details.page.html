@@ -3,7 +3,7 @@
     <img [src]="tmdbService.getImageUrl(tv.poster_path)" />
     <ion-card>
       <ion-card-header>
-        <ion-card-title>{{ tv.name }}</ion-card-title>
+        <ion-card-title>{{ tv.title }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <p><strong>Data de Lançamento:</strong> {{ tv.first_air_date | date }}</p>

@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class RecommendationsPage implements OnInit, OnDestroy {
   recommendedMovies: any[] = [];
+  isLoading: boolean = true;
   private authSubscription: Subscription | null = null;
 
   constructor(
@@ -39,7 +40,6 @@ export class RecommendationsPage implements OnInit, OnDestroy {
 
   async loadRecommendedMovies(userId: string) {
     try {
-      // Carregar todas as avaliações do usuário para pegar as que têm nota alta (4 ou mais)
       const reviewsSnapshot = await this.firestore
         .collection('reviews', (ref) =>
           ref.where('userId', '==', userId).where('rating', '>=', 4)
@@ -49,27 +49,23 @@ export class RecommendationsPage implements OnInit, OnDestroy {
   
       if (!reviewsSnapshot || reviewsSnapshot.empty) {
         console.error('Nenhuma avaliação encontrada no Firestore.');
-        alert('Nenhuma avaliação de filme ou série encontrada para gerar recomendações.');
         return;
       }
   
       const reviews = reviewsSnapshot.docs.map((doc) => doc.data() as any);
       console.log('Avaliações encontradas:', reviews);
   
-      // Verificar se a lista de avaliações está vazia
       if (reviews.length === 0) {
         alert('Nenhuma avaliação encontrada para gerar recomendações.');
         return;
       }
   
-      // Iterar sobre as avaliações e carregar recomendações
       for (const review of reviews) {
-        const mediaId = review.movieId || review.tvId;  // Ajustado para lidar com filmes e séries
-        const mediaType = review.movieId ? 'movie' : 'tv'; // Verificar se é filme ou série
+        const mediaId = review.movieId || review.tvId; 
+        const mediaType = review.movieId ? 'movie' : 'tv';
   
         if (!mediaId) continue;
   
-        // Pegar detalhes do filme ou série usando o ID
         let mediaDetails;
         if (mediaType === 'movie') {
           mediaDetails = await this.tmdbService.getMovieDetails(mediaId).toPromise();
@@ -78,12 +74,12 @@ export class RecommendationsPage implements OnInit, OnDestroy {
         }
   
         const genreIds = mediaDetails.genres.map((genre: any) => genre.id);
-        const mediaTitle = mediaDetails.title || mediaDetails.name;  // Título do filme ou série
+        const mediaTitle = mediaDetails.title || mediaDetails.name; 
         const mediaOverview = mediaDetails.overview;
-        const mediaDirector = mediaDetails.director;  // Diretor do filme (se disponível)
-        const mediaCast = mediaDetails.cast;  // Elenco do filme ou série (se disponível)
+        const mediaDirector = mediaDetails.director; 
+        const mediaCast = mediaDetails.cast; 
   
-        // Agora buscamos as recomendações com base no tipo de mídia (filme ou série)
+
         let similarMediaResponse;
         if (mediaType === 'movie') {
           similarMediaResponse = await this.tmdbService.getSimilarMovies(mediaId).toPromise();
@@ -92,26 +88,23 @@ export class RecommendationsPage implements OnInit, OnDestroy {
         }
   
         if (similarMediaResponse && Array.isArray(similarMediaResponse.results)) {
-          // Refinar as recomendações com base em mais critérios
           const relevantMedia = similarMediaResponse.results.filter((media: any) => {
             const isGenreSimilar = media.genre_ids.some((genreId: number) => genreIds.includes(genreId));
             const isTitleOrOverviewSimilar =
               media.title?.toLowerCase().includes(mediaTitle.toLowerCase()) ||
               media.overview?.toLowerCase().includes(mediaOverview.toLowerCase());
   
-            // Verificar se o filme/série tem o mesmo diretor ou elenco
             const isDirectorSimilar = media.director && media.director === mediaDirector;
             const isCastSimilar = media.cast && media.cast.some((cast: any) => mediaCast.includes(cast.name));
   
             return isGenreSimilar || isTitleOrOverviewSimilar || isDirectorSimilar || isCastSimilar;
           });
   
-          // Adicionar ao array de filmes/séries recomendados
           this.recommendedMovies.push({
             mediaId: mediaDetails.id,
-            title: mediaDetails.title || mediaDetails.name,  // Para filmes ou séries
+            title: mediaDetails.title || mediaDetails.name,  
             overview: mediaDetails.overview,
-            recommendedMovies: relevantMedia.slice(0, 4),  // Limita a 4 recomendações
+            recommendedMovies: relevantMedia.slice(0, 4),  
             mediaType: mediaType,
           });
   
@@ -131,7 +124,6 @@ export class RecommendationsPage implements OnInit, OnDestroy {
       return;
     }
   
-    // Verifica o tipo de mídia e navega para a página apropriada
     if (media.media_type === 'movie' || media.title) {
       this.router.navigate(['/movie-details', media.id]);
     } else if (media.media_type === 'tv' || media.name) {
